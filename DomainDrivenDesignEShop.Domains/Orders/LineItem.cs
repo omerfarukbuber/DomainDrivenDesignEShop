@@ -4,6 +4,10 @@ namespace DomainDrivenDesignEShop.Domain.Orders;
 
 public class LineItem
 {
+    public LineItem()
+    {
+    }
+
     internal LineItem(LineItemId id, OrderId orderId, ProductId productId, Money price)
     {
         Price = price;
