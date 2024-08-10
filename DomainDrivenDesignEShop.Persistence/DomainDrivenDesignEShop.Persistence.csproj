@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DomainDrivenDesignEShop.Domains\DomainDrivenDesignEShop.Domain.csproj" />
+    <ProjectReference Include="..\DomainDrivenDesignEShop.Application\DomainDrivenDesignEShop.Application.csproj" />
   </ItemGroup>
 
 </Project>
