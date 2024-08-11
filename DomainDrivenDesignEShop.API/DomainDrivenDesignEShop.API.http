@@ -1,0 +1,6 @@
+@DomainDrivenDesignEShop.API_HostAddress = http://localhost:5206
+
+GET {{DomainDrivenDesignEShop.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
