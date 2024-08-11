@@ -5,9 +5,10 @@ using MediatR;
 
 namespace DomainDrivenDesignEShop.Application.Orders.Create;
 
-internal sealed class CreateOrderCommandHandler(IAppDbContext context) : IRequestHandler<CreateOrderCommand>
+internal sealed class CreateOrderCommandHandler(IAppDbContext context, IPublisher publisher) : IRequestHandler<CreateOrderCommand>
 {
     private readonly IAppDbContext _context = context;
+    private readonly IPublisher _publisher = publisher;
 
     public async Task Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
@@ -19,7 +20,10 @@ internal sealed class CreateOrderCommandHandler(IAppDbContext context) : IReques
         }
 
         var order = Order.Create(customer.Id);
+
         await _context.Orders.AddAsync(order, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
+
+        await _publisher.Publish(new OrderCreatedEvent(order.Id), cancellationToken);
     }
 }
