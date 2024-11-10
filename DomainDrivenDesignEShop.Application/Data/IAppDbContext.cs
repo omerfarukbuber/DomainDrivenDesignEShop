@@ -11,6 +11,7 @@ public interface IAppDbContext
     DbSet<Customer> Customers { get; set; }
     DbSet<Product> Products { get; set; }
     DbSet<Order> Orders { get; set; }
+    DbSet<OrderSummary> OrderSummaries { get; set; }
     DatabaseFacade Database { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
