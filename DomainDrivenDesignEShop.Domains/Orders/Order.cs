@@ -10,37 +10,35 @@ public class Order
         
     }
     private readonly HashSet<LineItem> _lineItems = new();
-    public Guid Id { get; private set; }
-    public Guid CustomerId { get; private set; }
+    public OrderId Id { get; private set; }
+    public CustomerId CustomerId { get; private set; }
 
-    public static Order Create(Customer customer)
+    public IReadOnlyList<LineItem> LineItems => _lineItems.ToList();
+
+    public static Order Create(CustomerId customerId)
     {
         var order = new Order
         {
-            Id = Guid.NewGuid(),
-            CustomerId = customer.Id
+            Id = new OrderId(Guid.NewGuid()),
+            CustomerId = customerId
         };
         return order;
     }
-    public void Add(Product product)
+    public void Add(ProductId productId, Money productPrice)
     {
-        var lineItem = new LineItem(Guid.NewGuid(), Id, product.Id, product.Price);
+        var lineItem = new LineItem(new LineItemId(Guid.NewGuid()), Id, productId, productPrice);
 
         _lineItems.Add(lineItem);
     }
-}
 
-public class LineItem
-{
-    internal LineItem(Guid id, Guid orderId, Guid productId, Money price)
+    public void RemoveLineItem(LineItemId lineItemId)
     {
-        Price = price;
-        Id = id;
-        ProductId = productId;
-        OrderId = orderId;
+        var lineItem = _lineItems.FirstOrDefault(o => o.Id == lineItemId);
+        if (lineItem is null)
+        {
+            return;
+        }
+
+        _lineItems.Remove(lineItem);
     }
-    public Guid Id { get; private set; }
-    public Guid OrderId { get; private set; }
-    public Guid ProductId { get; private set; }
-    public Money Price { get; private set; }
 }
