@@ -22,6 +22,10 @@ internal sealed class CreateOrderCommandHandler(IAppDbContext context, IPublishe
         var order = Order.Create(customer.Id);
 
         await _context.Orders.AddAsync(order, cancellationToken);
+
+        await _context.OrderSummaries.AddAsync(new OrderSummary(order.Id.Value, order.CustomerId.Value, 0), cancellationToken);
+
+
         await _context.SaveChangesAsync(cancellationToken);
 
         await _publisher.Publish(new OrderCreatedEvent(order.Id), cancellationToken);
